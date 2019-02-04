@@ -23,12 +23,18 @@ include_directories(
 
 ## Get all source files
 file(GLOB SRC_HC_CC_SS src/hc_cc_state_space/*.cpp)
+## Get OMPL state space definitions
+file(GLOB OMPL_SPACES include/ompl_state_spaces/*.hpp)
 set(SRC_FILES
     src/dubins_state_space/dubins_state_space.cpp
     src/reeds_shepp_state_space/reeds_shepp_state_space.cpp
     src/utilities/utilities.cpp
     src/filter/ekf.cpp
-    ${SRC_HC_CC_SS})
+    ${SRC_HC_CC_SS}
+    ${OMPL_SPACES})
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME} ${SRC_FILES})
+
+add_executable(ompl_demo ${SRC_FILES} src/ompl_demo.cpp)
+target_link_libraries(ompl_demo -lompl)

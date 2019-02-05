@@ -2,11 +2,13 @@
 #include <ompl/base/spaces/DubinsStateSpace.h>
 #include <ompl/geometric/PathGeometric.h>
 
+#include "ompl_state_spaces/CurvatureStateSpace.hpp"
+
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
 
 int main(int argc, char **argv) {
-  ob::StateSpacePtr space(new ob::DubinsStateSpace(3.0));
+  ob::StateSpacePtr space(new hc_cc_spaces::CCReedsSheppStateSpace(30.0, 0.5));
   ob::RealVectorBounds bounds(2);
   bounds.setLow(0, 0);
   bounds.setLow(1, 0);

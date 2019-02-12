@@ -515,8 +515,8 @@ Reeds_Shepp_State_Space::Reeds_Shepp_Path::Reeds_Shepp_Path(const Reeds_Shepp_Pa
   total_length_ = fabs(t) + fabs(u) + fabs(v) + fabs(w) + fabs(x);
 }
 
-Reeds_Shepp_State_Space::Reeds_Shepp_Path Reeds_Shepp_State_Space::reeds_shepp(const State &state1,
-                                                                               const State &state2) const
+Reeds_Shepp_State_Space::Reeds_Shepp_Path Reeds_Shepp_State_Space::reeds_shepp(const CCState &state1,
+                                                                               const CCState &state2) const
 {
   double dx = state2.x - state1.x, dy = state2.y - state1.y, dth = state2.theta - state1.theta;
   double c = cos(state1.theta), s = sin(state1.theta);
@@ -531,12 +531,12 @@ void Reeds_Shepp_State_Space::set_filter_parameters(const Motion_Noise &motion_n
   ekf_.set_parameters(motion_noise, measurement_noise, controller);
 }
 
-double Reeds_Shepp_State_Space::get_distance(const State &state1, const State &state2) const
+double Reeds_Shepp_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
   return kappa_inv_ * this->reeds_shepp(state1, state2).length();
 }
 
-vector<Control> Reeds_Shepp_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> Reeds_Shepp_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
   vector<Control> controls;
   controls.reserve(5);
@@ -569,23 +569,23 @@ vector<Control> Reeds_Shepp_State_Space::get_controls(const State &state1, const
   return controls;
 }
 
-vector<State> Reeds_Shepp_State_Space::get_path(const State &state1, const State &state2) const
+vector<CCState> Reeds_Shepp_State_Space::get_path(const CCState &state1, const CCState &state2) const
 {
   vector<Control> controls = get_controls(state1, state2);
   return integrate(state1, controls);
 }
 
 vector<State_With_Covariance> Reeds_Shepp_State_Space::get_path_with_covariance(const State_With_Covariance &state1,
-                                                                                const State &state2) const
+                                                                                const CCState &state2) const
 {
   vector<Control> controls = get_controls(state1.state, state2);
   return integrate_with_covariance(state1, controls);
 }
 
-vector<State> Reeds_Shepp_State_Space::integrate(const State &state, const vector<Control> &controls) const
+vector<CCState> Reeds_Shepp_State_Space::integrate(const CCState &state, const vector<Control> &controls) const
 {
-  vector<State> path;
-  State state_curr, state_next;
+  vector<CCState> path;
+  CCState state_curr, state_next;
   // reserve capacity of path
   int n_states(0);
   for (const auto &control : controls)
@@ -699,9 +699,9 @@ vector<State_With_Covariance> Reeds_Shepp_State_Space::integrate_with_covariance
   return path_with_covariance;
 }
 
-State Reeds_Shepp_State_Space::interpolate(const State &state, const vector<Control> &controls, double t) const
+CCState Reeds_Shepp_State_Space::interpolate(const CCState &state, const vector<Control> &controls, double t) const
 {
-  State state_curr, state_next;
+  CCState state_curr, state_next;
   // get first state
   state_curr.x = state.x;
   state_curr.y = state.y;
@@ -762,10 +762,10 @@ State Reeds_Shepp_State_Space::interpolate(const State &state, const vector<Cont
   return state_curr;
 }
 
-inline State Reeds_Shepp_State_Space::integrate_ODE(const State &state, const Control &control,
+inline CCState Reeds_Shepp_State_Space::integrate_ODE(const CCState &state, const Control &control,
                                                     double integration_step) const
 {
-  State state_next;
+  CCState state_next;
   double d(sgn(control.delta_s));
   if (fabs(state.kappa) > get_epsilon())
   {

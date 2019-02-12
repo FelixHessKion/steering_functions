@@ -414,7 +414,7 @@ label_end:
   return path;
 }
 
-CC_Dubins_Path *CCpm0_Dubins_State_Space::ccpm0_dubins(const State &state1, const State &state2) const
+CC_Dubins_Path *CCpm0_Dubins_State_Space::ccpm0_dubins(const CCState &state1, const CCState &state2) const
 {
   // compute the 2 circles at the intial and final configuration
   Configuration start1(state1.x, state1.y, state1.theta, kappa_);
@@ -494,7 +494,7 @@ CC_Dubins_Path *CCpm0_Dubins_State_Space::ccpm0_dubins(const State &state1, cons
   return path[best_path];
 }
 
-double CCpm0_Dubins_State_Space::get_distance(const State &state1, const State &state2) const
+double CCpm0_Dubins_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
   CC_Dubins_Path *p = this->ccpm0_dubins(state1, state2);
   double length = p->length;
@@ -502,7 +502,7 @@ double CCpm0_Dubins_State_Space::get_distance(const State &state1, const State &
   return length;
 }
 
-vector<Control> CCpm0_Dubins_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> CCpm0_Dubins_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
   vector<Control> cc_dubins_controls;
   cc_dubins_controls.reserve(8);

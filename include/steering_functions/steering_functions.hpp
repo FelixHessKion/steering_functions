@@ -23,7 +23,7 @@
 namespace steer
 {
 /** \brief Description of a kinematic car's state */
-struct State
+struct CCState
 {
   /** \brief Position in x of the robot */
   double x;
@@ -45,7 +45,7 @@ struct State
 struct State_With_Covariance
 {
   /** \brief Expected state of the robot */
-  State state;
+  CCState state;
 
   /** \brief Covariance of the state estimation due to motion and measurement noise */
   double Sigma[16] = { 0.0 };

@@ -249,7 +249,7 @@ void HC_CC_RS_Path::print(bool eol) const
   }
 }
 
-bool state_equal(const State &state1, const State &state2)
+bool state_equal(const CCState &state1, const CCState &state2)
 {
   if (fabs(state2.kappa - state1.kappa) > get_epsilon())
     return false;

@@ -49,13 +49,13 @@ public:
   CC_Dubins_State_Space(double kappa, double sigma, double discretization = 0.1, bool forwards = true);
 
   /** \brief Predicts a state forwards or backwards to zero and max. curvature */
-  vector<pair<State, Control>> predict_state(const State& state, bool forwards) const;
+  vector<pair<CCState, Control>> predict_state(const CCState& state, bool forwards) const;
 
   /** \brief Returns shortest path length from state1 to state2 */
-  double get_distance(const State& state1, const State& state2) const;
+  double get_distance(const CCState& state1, const CCState& state2) const;
 
   /** \brief Returns controls of the shortest path from state1 to state2 */
-  vector<Control> get_controls(const State& state1, const State& state2) const;
+  vector<Control> get_controls(const CCState& state1, const CCState& state2) const;
 
 private:
   /** \brief Driving direction */

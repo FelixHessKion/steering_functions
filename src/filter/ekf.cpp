@@ -54,7 +54,7 @@ void EKF::eigen_to_covariance(const Matrix3d &covariance_eigen, double covarianc
   }
 }
 
-void EKF::get_motion_jacobi(const State &state, const Control &control, double integration_step, Matrix3d &F_x,
+void EKF::get_motion_jacobi(const CCState &state, const Control &control, double integration_step, Matrix3d &F_x,
                             Matrix32d &F_u) const
 {
   double d(sgn(control.delta_s));
@@ -162,7 +162,7 @@ Matrix3d EKF::get_observation_jacobi() const
   return I_;
 }
 
-Matrix2d EKF::get_motion_covariance(const State &state, const Control &control, double integration_step) const
+Matrix2d EKF::get_motion_covariance(const CCState &state, const Control &control, double integration_step) const
 {
   Matrix2d Q(Matrix2d::Zero());
   Q(0, 0) =

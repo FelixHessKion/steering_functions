@@ -26,14 +26,14 @@ HC_Reeds_Shepp_State_Space::HC_Reeds_Shepp_State_Space(double kappa, double sigm
 {
 }
 
-vector<pair<State, Control>> HC_Reeds_Shepp_State_Space::predict_state(const State &state) const
+vector<pair<CCState, Control>> HC_Reeds_Shepp_State_Space::predict_state(const CCState &state) const
 {
-  vector<pair<State, Control>> states_controls;
+  vector<pair<CCState, Control>> states_controls;
 
   // no prediction required
   if ((fabs(state.kappa) < get_epsilon()) || ((kappa_ - fabs(state.kappa)) < get_epsilon()))
   {
-    pair<State, Control> state_control;
+    pair<CCState, Control> state_control;
     state_control.first = state;
     state_control.second.delta_s = 0.0;
     state_control.second.kappa = state.kappa;
@@ -44,7 +44,7 @@ vector<pair<State, Control>> HC_Reeds_Shepp_State_Space::predict_state(const Sta
 
   states_controls.reserve(4);
   double sgn_kappa = sgn(state.kappa);
-  pair<State, Control> state_control1, state_control2, state_control3, state_control4;
+  pair<CCState, Control> state_control1, state_control2, state_control3, state_control4;
 
   // assign controls
   state_control1.second.delta_s = (kappa_ - sgn_kappa * state.kappa) / sigma_;
@@ -79,21 +79,21 @@ vector<pair<State, Control>> HC_Reeds_Shepp_State_Space::predict_state(const Sta
   return states_controls;
 }
 
-double HC_Reeds_Shepp_State_Space::get_distance(const State &state1, const State &state2) const
+double HC_Reeds_Shepp_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
-  vector<pair<State, Control>> start_states_controls = this->predict_state(state1);
-  vector<pair<State, Control>> end_states_controls = this->predict_state(state2);
+  vector<pair<CCState, Control>> start_states_controls = this->predict_state(state1);
+  vector<pair<CCState, Control>> end_states_controls = this->predict_state(state2);
   vector<double> distances;
   distances.reserve(16);
 
   // compute the path length for all predicted start and end states
   for (const auto &start_state_control : start_states_controls)
   {
-    State start_state = start_state_control.first;
+    CCState start_state = start_state_control.first;
     Control start_control = start_state_control.second;
     for (const auto &end_state_control : end_states_controls)
     {
-      State end_state = end_state_control.first;
+      CCState end_state = end_state_control.first;
       Control end_control = end_state_control.second;
       // check if start and goal state are equal
       if (state_equal(start_state, end_state))
@@ -131,21 +131,21 @@ double HC_Reeds_Shepp_State_Space::get_distance(const State &state1, const State
   return *min_element(distances.begin(), distances.end());
 }
 
-vector<Control> HC_Reeds_Shepp_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> HC_Reeds_Shepp_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
-  vector<pair<State, Control>> start_states_controls = this->predict_state(state1);
-  vector<pair<State, Control>> end_states_controls = this->predict_state(state2);
+  vector<pair<CCState, Control>> start_states_controls = this->predict_state(state1);
+  vector<pair<CCState, Control>> end_states_controls = this->predict_state(state2);
   vector<pair<vector<Control>, double>> hc_rs_controls_distance_pairs;
   hc_rs_controls_distance_pairs.reserve(16);
 
   // compute the path for all predicted start and end states
   for (const auto &start_state_control : start_states_controls)
   {
-    State start_state = start_state_control.first;
+    CCState start_state = start_state_control.first;
     Control start_control = start_state_control.second;
     for (const auto &end_state_control : end_states_controls)
     {
-      State end_state = end_state_control.first;
+      CCState end_state = end_state_control.first;
       Control end_control = end_state_control.second;
       vector<Control> hc_rs_controls;
       // check if start and goal state are equal

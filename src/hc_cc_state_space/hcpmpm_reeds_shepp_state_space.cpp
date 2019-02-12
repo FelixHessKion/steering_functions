@@ -1725,7 +1725,7 @@ label_end:
   return path;
 }
 
-HC_CC_RS_Path *HCpmpm_Reeds_Shepp_State_Space::hcpmpm_reeds_shepp(const State &state1, const State &state2) const
+HC_CC_RS_Path *HCpmpm_Reeds_Shepp_State_Space::hcpmpm_reeds_shepp(const CCState &state1, const CCState &state2) const
 {
   // compute the 4 circles at the intial and final configuration
   Configuration start1(state1.x, state1.y, state1.theta, kappa_);
@@ -1818,7 +1818,7 @@ HC_CC_RS_Path *HCpmpm_Reeds_Shepp_State_Space::hcpmpm_reeds_shepp(const State &s
   return path[best_path];
 }
 
-double HCpmpm_Reeds_Shepp_State_Space::get_distance(const State &state1, const State &state2) const
+double HCpmpm_Reeds_Shepp_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
   HC_CC_RS_Path *p = this->hcpmpm_reeds_shepp(state1, state2);
   double length = p->length;
@@ -1826,7 +1826,7 @@ double HCpmpm_Reeds_Shepp_State_Space::get_distance(const State &state1, const S
   return length;
 }
 
-vector<Control> HCpmpm_Reeds_Shepp_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> HCpmpm_Reeds_Shepp_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
   vector<Control> hc_rs_controls;
   hc_rs_controls.reserve(8);

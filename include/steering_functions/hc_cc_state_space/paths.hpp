@@ -151,7 +151,7 @@ public:
 };
 
 /** \brief Checks whether two states are equal */
-bool state_equal(const State &state1, const State &state2);
+bool state_equal(const CCState &state1, const CCState &state2);
 
 /** \brief Reverses a control */
 void reverse_control(Control &control);

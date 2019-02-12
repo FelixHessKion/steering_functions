@@ -146,33 +146,33 @@ public:
                              const Controller &controller);
 
   /** \brief Returns type and length of segments of path from state1 to state2 with curvature = 1.0 */
-  Dubins_Path dubins(const State &state1, const State &state2) const;
+  Dubins_Path dubins(const CCState &state1, const CCState &state2) const;
 
   /** \brief Returns shortest path length from state1 to state2 with curvature = kappa_ */
-  double get_distance(const State &state1, const State &state2) const;
+  double get_distance(const CCState &state1, const CCState &state2) const;
 
   /** \brief Returns controls of the shortest path from state1 to state2 with curvature = kappa_ */
-  vector<Control> get_controls(const State &state1, const State &state2) const;
+  vector<Control> get_controls(const CCState &state1, const CCState &state2) const;
 
   /** \brief Returns shortest path from state1 to state2 with curvature = kappa_ */
-  vector<State> get_path(const State &state1, const State &state2) const;
+  vector<CCState> get_path(const CCState &state1, const CCState &state2) const;
 
   /** \brief Returns shortest path including covariances from state1 to state2 with curvature = kappa_ */
   vector<State_With_Covariance> get_path_with_covariance(const State_With_Covariance &state1,
-                                                         const State &state2) const;
+                                                         const CCState &state2) const;
 
   /** \brief Returns integrated states given a start state and controls with curvature = kappa_ */
-  vector<State> integrate(const State &state, const vector<Control> &controls) const;
+  vector<CCState> integrate(const CCState &state, const vector<Control> &controls) const;
 
   /** \brief Returns integrated states including covariance given a start state and controls with curvature = kappa_ */
   vector<State_With_Covariance> integrate_with_covariance(const State_With_Covariance &state,
                                                           const vector<Control> &controls) const;
 
   /** \brief Returns interpolated state at distance t in [0,1] (percent of total path length with curvature = kappa_) */
-  State interpolate(const State &state, const vector<Control> &controls, double t) const;
+  CCState interpolate(const CCState &state, const vector<Control> &controls, double t) const;
 
   /** \brief Returns integrated state given a start state, a control, and an integration step */
-  inline State integrate_ODE(const State &state, const Control &control, double integration_step) const;
+  inline CCState integrate_ODE(const CCState &state, const Control &control, double integration_step) const;
 
 private:
   /** \brief Curvature */

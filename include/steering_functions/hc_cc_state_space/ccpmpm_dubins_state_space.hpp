@@ -61,13 +61,13 @@ public:
   CC_Dubins_Path* ccpmpm_circles_dubins_path(const HC_CC_Circle& c1, const HC_CC_Circle& c2) const;
 
   /** \brief Returns a sequence of turns and straight lines connecting a start and an end configuration */
-  CC_Dubins_Path* ccpmpm_dubins(const State& state1, const State& state2) const;
+  CC_Dubins_Path* ccpmpm_dubins(const CCState& state1, const CCState& state2) const;
 
   /** \brief Returns shortest path length from state1 to state2 */
-  double get_distance(const State& state1, const State& state2) const;
+  double get_distance(const CCState& state1, const CCState& state2) const;
 
   /** \brief Returns controls of the shortest path from state1 to state2 */
-  vector<Control> get_controls(const State& state1, const State& state2) const;
+  vector<Control> get_controls(const CCState& state1, const CCState& state2) const;
 
 private:
   /** \brief Driving direction */

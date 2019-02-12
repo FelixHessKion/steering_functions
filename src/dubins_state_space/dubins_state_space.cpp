@@ -216,7 +216,7 @@ const Dubins_State_Space::Dubins_Path_Segment_Type Dubins_State_Space::dubins_pa
   { DUBINS_RIGHT, DUBINS_LEFT, DUBINS_RIGHT },    { DUBINS_LEFT, DUBINS_RIGHT, DUBINS_LEFT }
 };
 
-Dubins_State_Space::Dubins_Path Dubins_State_Space::dubins(const State &state1, const State &state2) const
+Dubins_State_Space::Dubins_Path Dubins_State_Space::dubins(const CCState &state1, const CCState &state2) const
 {
   double dx = state2.x - state1.x, dy = state2.y - state1.y, th = atan2(dy, dx), d = sqrt(dx * dx + dy * dy) * kappa_;
   double alpha = twopify(state1.theta - th), beta = twopify(state2.theta - th);
@@ -229,7 +229,7 @@ void Dubins_State_Space::set_filter_parameters(const Motion_Noise &motion_noise,
   ekf_.set_parameters(motion_noise, measurement_noise, controller);
 }
 
-double Dubins_State_Space::get_distance(const State &state1, const State &state2) const
+double Dubins_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
   if (forwards_)
     return kappa_inv_ * this->dubins(state1, state2).length();
@@ -237,7 +237,7 @@ double Dubins_State_Space::get_distance(const State &state1, const State &state2
     return kappa_inv_ * this->dubins(state2, state1).length();
 }
 
-vector<Control> Dubins_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> Dubins_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
   vector<Control> dubins_controls;
   dubins_controls.reserve(3);
@@ -279,23 +279,23 @@ vector<Control> Dubins_State_Space::get_controls(const State &state1, const Stat
   return dubins_controls;
 }
 
-vector<State> Dubins_State_Space::get_path(const State &state1, const State &state2) const
+vector<CCState> Dubins_State_Space::get_path(const CCState &state1, const CCState &state2) const
 {
   vector<Control> dubins_controls = get_controls(state1, state2);
   return integrate(state1, dubins_controls);
 }
 
 vector<State_With_Covariance> Dubins_State_Space::get_path_with_covariance(const State_With_Covariance &state1,
-                                                                           const State &state2) const
+                                                                           const CCState &state2) const
 {
   vector<Control> controls = get_controls(state1.state, state2);
   return integrate_with_covariance(state1, controls);
 }
 
-vector<State> Dubins_State_Space::integrate(const State &state, const vector<Control> &controls) const
+vector<CCState> Dubins_State_Space::integrate(const CCState &state, const vector<Control> &controls) const
 {
-  vector<State> path;
-  State state_curr, state_next;
+  vector<CCState> path;
+  CCState state_curr, state_next;
   // reserve capacity of path
   int n_states(0);
   for (const auto &control : controls)
@@ -409,9 +409,9 @@ vector<State_With_Covariance> Dubins_State_Space::integrate_with_covariance(cons
   return path_with_covariance;
 }
 
-State Dubins_State_Space::interpolate(const State &state, const vector<Control> &controls, double t) const
+CCState Dubins_State_Space::interpolate(const CCState &state, const vector<Control> &controls, double t) const
 {
-  State state_curr, state_next;
+  CCState state_curr, state_next;
   // get first state
   state_curr.x = state.x;
   state_curr.y = state.y;
@@ -472,10 +472,10 @@ State Dubins_State_Space::interpolate(const State &state, const vector<Control> 
   return state_curr;
 }
 
-inline State Dubins_State_Space::integrate_ODE(const State &state, const Control &control,
+inline CCState Dubins_State_Space::integrate_ODE(const CCState &state, const Control &control,
                                                double integration_step) const
 {
-  State state_next;
+  CCState state_next;
   double d(sgn(control.delta_s));
   if (fabs(state.kappa) > get_epsilon())
   {

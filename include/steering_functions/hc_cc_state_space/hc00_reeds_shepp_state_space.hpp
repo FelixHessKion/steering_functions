@@ -64,13 +64,13 @@ public:
   HC_CC_RS_Path* hc00_circles_rs_path(const HC_CC_Circle& c1, const HC_CC_Circle& c2) const;
 
   /** \brief Returns a sequence of turns and straight lines connecting a start and an end configuration */
-  HC_CC_RS_Path* hc00_reeds_shepp(const State& state1, const State& state2) const;
+  HC_CC_RS_Path* hc00_reeds_shepp(const CCState& state1, const CCState& state2) const;
 
   /** \brief Returns shortest path length from state1 to state2 */
-  double get_distance(const State& state1, const State& state2) const;
+  double get_distance(const CCState& state1, const CCState& state2) const;
 
   /** \brief Returns controls of the shortest path from state1 to state2 */
-  vector<Control> get_controls(const State& state1, const State& state2) const;
+  vector<Control> get_controls(const CCState& state1, const CCState& state2) const;
 
 private:
   /** \brief Pimpl Idiom: class that contains functions to compute the families  */

@@ -27,14 +27,14 @@ CC_Dubins_State_Space::CC_Dubins_State_Space(double kappa, double sigma, double 
 {
 }
 
-vector<pair<State, Control>> CC_Dubins_State_Space::predict_state(const State &state, bool forwards) const
+vector<pair<CCState, Control>> CC_Dubins_State_Space::predict_state(const CCState &state, bool forwards) const
 {
-  vector<pair<State, Control>> states_controls;
+  vector<pair<CCState, Control>> states_controls;
 
   // no prediction required
   if ((fabs(state.kappa) < get_epsilon()) || ((kappa_ - fabs(state.kappa)) < get_epsilon()))
   {
-    pair<State, Control> state_control;
+    pair<CCState, Control> state_control;
     state_control.first = state;
     state_control.second.delta_s = 0.0;
     state_control.second.kappa = state.kappa;
@@ -45,7 +45,7 @@ vector<pair<State, Control>> CC_Dubins_State_Space::predict_state(const State &s
 
   states_controls.reserve(2);
   double sgn_kappa = sgn(state.kappa);
-  pair<State, Control> state_control1, state_control2;
+  pair<CCState, Control> state_control1, state_control2;
 
   // assign controls
   if (forwards)
@@ -85,21 +85,21 @@ vector<pair<State, Control>> CC_Dubins_State_Space::predict_state(const State &s
   return states_controls;
 }
 
-double CC_Dubins_State_Space::get_distance(const State &state1, const State &state2) const
+double CC_Dubins_State_Space::get_distance(const CCState &state1, const CCState &state2) const
 {
-  vector<pair<State, Control>> start_states_controls = this->predict_state(state1, forwards_);
-  vector<pair<State, Control>> end_states_controls = this->predict_state(state2, !forwards_);
+  vector<pair<CCState, Control>> start_states_controls = this->predict_state(state1, forwards_);
+  vector<pair<CCState, Control>> end_states_controls = this->predict_state(state2, !forwards_);
   vector<double> distances;
   distances.reserve(16);
 
   // compute the path length for all predicted start and end states
   for (const auto &start_state_control : start_states_controls)
   {
-    State start_state = start_state_control.first;
+    CCState start_state = start_state_control.first;
     Control start_control = start_state_control.second;
     for (const auto &end_state_control : end_states_controls)
     {
-      State end_state = end_state_control.first;
+      CCState end_state = end_state_control.first;
       Control end_control = end_state_control.second;
       // check if start and goal state are equal
       if (state_equal(start_state, end_state))
@@ -137,21 +137,21 @@ double CC_Dubins_State_Space::get_distance(const State &state1, const State &sta
   return *min_element(distances.begin(), distances.end());
 }
 
-vector<Control> CC_Dubins_State_Space::get_controls(const State &state1, const State &state2) const
+vector<Control> CC_Dubins_State_Space::get_controls(const CCState &state1, const CCState &state2) const
 {
-  vector<pair<State, Control>> start_states_controls = this->predict_state(state1, forwards_);
-  vector<pair<State, Control>> end_states_controls = this->predict_state(state2, !forwards_);
+  vector<pair<CCState, Control>> start_states_controls = this->predict_state(state1, forwards_);
+  vector<pair<CCState, Control>> end_states_controls = this->predict_state(state2, !forwards_);
   vector<pair<vector<Control>, double>> cc_dubins_controls_distance_pairs;
   cc_dubins_controls_distance_pairs.reserve(16);
 
   // compute the path for all predicted start and end states
   for (const auto &start_state_control : start_states_controls)
   {
-    State start_state = start_state_control.first;
+    CCState start_state = start_state_control.first;
     Control start_control = start_state_control.second;
     for (const auto &end_state_control : end_states_controls)
     {
-      State end_state = end_state_control.first;
+      CCState end_state = end_state_control.first;
       Control end_control = end_state_control.second;
       vector<Control> cc_dubins_controls;
       // check if start and goal state are equal

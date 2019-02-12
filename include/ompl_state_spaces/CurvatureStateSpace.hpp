@@ -145,21 +145,21 @@ class CurvatureStateSpace : public ob::CompoundStateSpace {
 
   void interpolate(const ob::State *from, const ob::State *to, double t,
                    ob::State *state) const override {
-    const State state1{fromOMPL(from)}, state2{fromOMPL(to)};
+    const CCState state1{fromOMPL(from)}, state2{fromOMPL(to)};
     const auto controls = space_->get_controls(state1, state2);
-    State result = space_->interpolate(state1, controls, t);
+    CCState result = space_->interpolate(state1, controls, t);
     toOMPL(result, state);
   }
 
  private:
   const HC_CC_SPACE *space_;
 
-  static State fromOMPL(const ob::State *state) {
+  static CCState fromOMPL(const ob::State *state) {
     const auto *s = state->as<StateType>();
     return {s->getX(), s->getY(), s->getYaw(), s->getKappa(), s->getD()};
   }
 
-  static void toOMPL(const State &state, ob::State *result) {
+  static void toOMPL(const CCState &state, ob::State *result) {
     result->as<StateType>()->setXY(state.x, state.y);
     result->as<StateType>()->setYaw(state.theta);
     result->as<StateType>()->setKappa(state.kappa);

@@ -57,23 +57,23 @@ void HC_CC_State_Space::set_filter_parameters(const Motion_Noise &motion_noise,
   ekf_.set_parameters(motion_noise, measurement_noise, controller);
 }
 
-vector<State> HC_CC_State_Space::get_path(const State &state1, const State &state2) const
+vector<CCState> HC_CC_State_Space::get_path(const CCState &state1, const CCState &state2) const
 {
   vector<Control> controls = get_controls(state1, state2);
   return integrate(state1, controls);
 }
 
 vector<State_With_Covariance> HC_CC_State_Space::get_path_with_covariance(const State_With_Covariance &state1,
-                                                                          const State &state2) const
+                                                                          const CCState &state2) const
 {
   vector<Control> controls = get_controls(state1.state, state2);
   return integrate_with_covariance(state1, controls);
 }
 
-vector<State> HC_CC_State_Space::integrate(const State &state, const vector<Control> &controls) const
+vector<CCState> HC_CC_State_Space::integrate(const CCState &state, const vector<Control> &controls) const
 {
-  vector<State> path;
-  State state_curr, state_next;
+  vector<CCState> path;
+  CCState state_curr, state_next;
   // reserve capacity of path
   int n_states(0);
   for (const auto &control : controls)
@@ -201,9 +201,9 @@ vector<State_With_Covariance> HC_CC_State_Space::integrate_with_covariance(const
   return path_with_covariance;
 }
 
-State HC_CC_State_Space::interpolate(const State &state, const vector<Control> &controls, double t) const
+CCState HC_CC_State_Space::interpolate(const CCState &state, const vector<Control> &controls, double t) const
 {
-  State state_curr, state_next;
+  CCState state_curr, state_next;
   // get first state
   state_curr.x = state.x;
   state_curr.y = state.y;
@@ -270,9 +270,9 @@ State HC_CC_State_Space::interpolate(const State &state, const vector<Control> &
   return state_curr;
 }
 
-inline State HC_CC_State_Space::integrate_ODE(const State &state, const Control &control, double integration_step) const
+inline CCState HC_CC_State_Space::integrate_ODE(const CCState &state, const Control &control, double integration_step) const
 {
-  State state_next;
+  CCState state_next;
   double sigma(control.sigma);
   double d(sgn(control.delta_s));
   if (fabs(sigma) > get_epsilon())

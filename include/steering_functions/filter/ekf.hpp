@@ -50,14 +50,14 @@ public:
   void eigen_to_covariance(const Matrix3d &covariance_eigen, double covariance[16]) const;
 
   /** \brief Computes the Jacobians of the motion equations with respect to the state and control */
-  void get_motion_jacobi(const State &state, const Control &control, double integration_step, Matrix3d &F_x,
+  void get_motion_jacobi(const CCState &state, const Control &control, double integration_step, Matrix3d &F_x,
                          Matrix32d &F_u) const;
 
   /** \brief Computes the Jacobian of the observation equations with respect to the state */
   Matrix3d get_observation_jacobi() const;
 
   /** \brief Returns the motion covariance in control space */
-  Matrix2d get_motion_covariance(const State &state, const Control &control, double integration_step) const;
+  Matrix2d get_motion_covariance(const CCState &state, const Control &control, double integration_step) const;
 
   /** \brief Returns the observation covariance */
   Matrix3d get_observation_covariance() const;

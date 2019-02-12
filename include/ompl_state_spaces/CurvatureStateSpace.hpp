@@ -3,6 +3,7 @@
 #include <Eigen/Core>
 
 #include <ompl/base/spaces/DiscreteStateSpace.h>
+#include <ompl/base/ProjectionEvaluator.h>
 #include <ompl/base/spaces/SE2StateSpace.h>
 #include <ompl/tools/config/MagicConstants.h>
 

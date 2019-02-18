@@ -133,7 +133,7 @@ class CurvatureStateSpace : public ob::CompoundStateSpace {
       }
 
       void project(const ob::State *state,
-                   ob::EuclideanProjection &projection) const override {
+                   Eigen::Ref<Eigen::VectorXd> projection) const override {
         projection.resize(2);
         projection[0] = state->as<StateType>()->getX();
         projection[1] = state->as<StateType>()->getY();

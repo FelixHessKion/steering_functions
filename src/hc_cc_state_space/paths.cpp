@@ -25,8 +25,8 @@
 
 #include "steering_functions/hc_cc_state_space/paths.hpp"
 
-Path::Path(const Configuration &_start, const Configuration &_end, double _kappa, double _sigma, double _length)
-{
+Path::Path(const Configuration &_start, const Configuration &_end,
+           double _kappa, double _sigma, double _length) {
   start = _start;
   end = _end;
   kappa = _kappa;
@@ -34,12 +34,15 @@ Path::Path(const Configuration &_start, const Configuration &_end, double _kappa
   length = _length;
 }
 
-CC_Dubins_Path::CC_Dubins_Path(const Configuration &_start, const Configuration &_end, cc_dubins::path_type _type,
-                               double _kappa, double _sigma, Configuration *_qi1, Configuration *_qi2,
-                               Configuration *_qi3, Configuration *_qi4, HC_CC_Circle *_cstart, HC_CC_Circle *_cend,
-                               HC_CC_Circle *_ci1, HC_CC_Circle *_ci2, double _length)
-  : Path(_start, _end, _kappa, _sigma, _length)
-{
+CC_Dubins_Path::CC_Dubins_Path(const Configuration &_start,
+                               const Configuration &_end,
+                               cc_dubins::path_type _type, double _kappa,
+                               double _sigma, Configuration *_qi1,
+                               Configuration *_qi2, Configuration *_qi3,
+                               Configuration *_qi4, HC_CC_Circle *_cstart,
+                               HC_CC_Circle *_cend, HC_CC_Circle *_ci1,
+                               HC_CC_Circle *_ci2, double _length)
+    : Path(_start, _end, _kappa, _sigma, _length) {
   type = _type;
   qi1 = _qi1;
   qi2 = _qi2;
@@ -51,8 +54,7 @@ CC_Dubins_Path::CC_Dubins_Path(const Configuration &_start, const Configuration 
   ci2 = _ci2;
 }
 
-CC_Dubins_Path::~CC_Dubins_Path()
-{
+CC_Dubins_Path::~CC_Dubins_Path() {
   delete qi1;
   delete qi2;
   delete qi3;
@@ -63,11 +65,9 @@ CC_Dubins_Path::~CC_Dubins_Path()
   delete ci2;
 }
 
-void CC_Dubins_Path::print(bool eol) const
-{
+void CC_Dubins_Path::print(bool eol) const {
   cout << "CC_Dubins_Path: type ";
-  switch (type)
-  {
+  switch (type) {
     case cc_dubins::E:
       cout << "E";
       break;
@@ -98,39 +98,37 @@ void CC_Dubins_Path::print(bool eol) const
   cout << ", length " << length << ", configurations ";
   start.print(false);
   cout << " -> ";
-  if (qi1)
-  {
+  if (qi1) {
     qi1->print(false);
     cout << " -> ";
   }
-  if (qi2)
-  {
+  if (qi2) {
     qi2->print(false);
     cout << " -> ";
   }
-  if (qi3)
-  {
+  if (qi3) {
     qi3->print(false);
     cout << " -> ";
   }
-  if (qi4)
-  {
+  if (qi4) {
     qi4->print(false);
     cout << " -> ";
   }
   end.print(false);
-  if (eol)
-  {
+  if (eol) {
     cout << endl;
   }
 }
 
-HC_CC_RS_Path::HC_CC_RS_Path(const Configuration &_start, const Configuration &_end, hc_cc_rs::path_type _type,
-                             double _kappa, double _sigma, Configuration *_qi1, Configuration *_qi2,
-                             Configuration *_qi3, Configuration *_qi4, HC_CC_Circle *_cstart, HC_CC_Circle *_cend,
-                             HC_CC_Circle *_ci1, HC_CC_Circle *_ci2, double _length)
-  : Path(_start, _end, _kappa, _sigma, _length)
-{
+HC_CC_RS_Path::HC_CC_RS_Path(const Configuration &_start,
+                             const Configuration &_end,
+                             hc_cc_rs::path_type _type, double _kappa,
+                             double _sigma, Configuration *_qi1,
+                             Configuration *_qi2, Configuration *_qi3,
+                             Configuration *_qi4, HC_CC_Circle *_cstart,
+                             HC_CC_Circle *_cend, HC_CC_Circle *_ci1,
+                             HC_CC_Circle *_ci2, double _length)
+    : Path(_start, _end, _kappa, _sigma, _length) {
   type = _type;
   qi1 = _qi1;
   qi2 = _qi2;
@@ -142,8 +140,7 @@ HC_CC_RS_Path::HC_CC_RS_Path(const Configuration &_start, const Configuration &_
   ci2 = _ci2;
 }
 
-HC_CC_RS_Path::~HC_CC_RS_Path()
-{
+HC_CC_RS_Path::~HC_CC_RS_Path() {
   delete qi1;
   delete qi2;
   delete qi3;
@@ -154,11 +151,9 @@ HC_CC_RS_Path::~HC_CC_RS_Path()
   delete cend;
 }
 
-void HC_CC_RS_Path::print(bool eol) const
-{
+void HC_CC_RS_Path::print(bool eol) const {
   cout << "HC_CC_RS_Path: type ";
-  switch (type)
-  {
+  switch (type) {
     case hc_cc_rs::E:
       cout << "E";
       break;
@@ -222,37 +217,30 @@ void HC_CC_RS_Path::print(bool eol) const
   cout << ", length " << length << ", configurations ";
   start.print(false);
   cout << " -> ";
-  if (qi1)
-  {
+  if (qi1) {
     qi1->print(false);
     cout << " -> ";
   }
-  if (qi2)
-  {
+  if (qi2) {
     qi2->print(false);
     cout << " -> ";
   }
-  if (qi3)
-  {
+  if (qi3) {
     qi3->print(false);
     cout << " -> ";
   }
-  if (qi4)
-  {
+  if (qi4) {
     qi4->print(false);
     cout << " -> ";
   }
   end.print(false);
-  if (eol)
-  {
+  if (eol) {
     cout << endl;
   }
 }
 
-bool state_equal(const CCState &state1, const CCState &state2)
-{
-  if (fabs(state2.kappa - state1.kappa) > get_epsilon())
-    return false;
+bool state_equal(const CCState &state1, const CCState &state2) {
+  if (fabs(state2.kappa - state1.kappa) > get_epsilon()) return false;
   if (fabs(twopify(state2.theta) - twopify(state1.theta)) > get_epsilon())
     return false;
   if (point_distance(state1.x, state1.y, state2.x, state2.y) > get_epsilon())
@@ -260,16 +248,15 @@ bool state_equal(const CCState &state1, const CCState &state2)
   return true;
 }
 
-void reverse_control(Control &control)
-{
+void reverse_control(Control &control) {
   control.delta_s = -control.delta_s;
   control.kappa = control.kappa + fabs(control.delta_s) * control.sigma;
   control.sigma = -control.sigma;
 }
 
-Control subtract_control(const Control &control1, const Control &control2)
-{
-  assert(sgn(control1.delta_s) * control1.sigma == sgn(control2.delta_s) * control2.sigma);
+Control subtract_control(const Control &control1, const Control &control2) {
+  assert(sgn(control1.delta_s) * control1.sigma ==
+         sgn(control2.delta_s) * control2.sigma);
   Control control;
   control.delta_s = control1.delta_s - control2.delta_s;
   control.kappa = control1.kappa;
@@ -277,8 +264,7 @@ Control subtract_control(const Control &control1, const Control &control2)
   return control;
 }
 
-void empty_controls(vector<Control> &controls)
-{
+void empty_controls(vector<Control> &controls) {
   Control control;
   control.delta_s = 0.0;
   control.kappa = 0.0;
@@ -286,10 +272,11 @@ void empty_controls(vector<Control> &controls)
   controls.push_back(control);
 }
 
-void straight_controls(const Configuration &q1, const Configuration &q2, vector<Control> &controls)
-{
+void straight_controls(const Configuration &q1, const Configuration &q2,
+                       vector<Control> &controls) {
   double length = point_distance(q1.x, q1.y, q2.x, q2.y);
-  double dot_product = cos(q1.theta) * (q2.x - q1.x) + sin(q1.theta) * (q2.y - q1.y);
+  double dot_product =
+      cos(q1.theta) * (q2.x - q1.x) + sin(q1.theta) * (q2.y - q1.y);
   int d = sgn(dot_product);
   Control control;
   control.delta_s = d * length;
@@ -298,8 +285,7 @@ void straight_controls(const Configuration &q1, const Configuration &q2, vector<
   controls.push_back(control);
 }
 
-int direction(bool forward, bool order)
-{
+int direction(bool forward, bool order) {
   if (forward && order)
     return 1;
   else if (forward && !order)
@@ -308,10 +294,12 @@ int direction(bool forward, bool order)
     return -1;
   else if (!forward && !order)
     return 1;
+  else
+    return 0;
 }
 
-void rs_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order, vector<Control> &controls)
-{
+void rs_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
+                      vector<Control> &controls) {
   assert(fabs(fabs(c.kappa) - fabs(q.kappa)) < get_epsilon() &&
          fabs(fabs(c.sigma) - numeric_limits<double>::max()) < get_epsilon());
   Control arc;
@@ -321,14 +309,12 @@ void rs_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   double length_arc;
   int shift;
   // irregular rs-turn
-  if (!c.regular && (delta > PI))
-  {
+  if (!c.regular && (delta > PI)) {
     shift = -d;
     length_arc = fabs((TWO_PI - delta) * c.kappa_inv);
   }
   // regular rs-turn
-  else
-  {
+  else {
     shift = d;
     length_arc = fabs(delta * c.kappa_inv);
   }
@@ -339,8 +325,8 @@ void rs_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   return;
 }
 
-void hc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order, vector<Control> &controls)
-{
+void hc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
+                      vector<Control> &controls) {
   assert(fabs(fabs(c.kappa) - fabs(q.kappa)) < get_epsilon());
   Control clothoid, arc;
   double delta;
@@ -351,31 +337,26 @@ void hc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   int shift;
 
   // regular hc-turn
-  if (c.regular && (delta < c.delta_min))
-  {
+  if (c.regular && (delta < c.delta_min)) {
     shift = d;
     length_arc = fabs((TWO_PI + delta - c.delta_min) * c.kappa_inv);
   }
   // irregular hc-turn
-  else if (!c.regular && (delta < c.delta_min))
-  {
+  else if (!c.regular && (delta < c.delta_min)) {
     shift = -d;
     length_arc = fabs((-delta + c.delta_min) * c.kappa_inv);
   }
   // irregular hc-turn
-  else if (!c.regular && (delta > c.delta_min + PI))
-  {
+  else if (!c.regular && (delta > c.delta_min + PI)) {
     shift = -d;
     length_arc = fabs((TWO_PI - delta + c.delta_min) * c.kappa_inv);
   }
   // regular hc-turn
-  else
-  {
+  else {
     shift = d;
     length_arc = fabs((delta - c.delta_min) * c.kappa_inv);
   }
-  if (order)
-  {
+  if (order) {
     clothoid.delta_s = d * length_min;
     clothoid.kappa = 0.0;
     clothoid.sigma = c.sigma;
@@ -385,8 +366,7 @@ void hc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   arc.kappa = c.kappa;
   arc.sigma = 0.0;
   controls.push_back(arc);
-  if (!order)
-  {
+  if (!order) {
     clothoid.delta_s = d * length_min;
     clothoid.kappa = c.kappa;
     clothoid.sigma = -c.sigma;
@@ -395,16 +375,15 @@ void hc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   return;
 }
 
-void cc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order, vector<Control> &controls)
-{
+void cc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
+                      vector<Control> &controls) {
   assert(fabs(q.kappa) < get_epsilon());
   Control clothoid1, arc, clothoid2;
   double delta;
   c.deflection(q, &delta);
   int d = direction(c.forward, order);
   // straight line
-  if (delta < get_epsilon())
-  {
+  if (delta < get_epsilon()) {
     if (order)
       straight_controls(c.start, q, controls);
     else
@@ -412,14 +391,12 @@ void cc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
     return;
   }
   // elementary path
-  if (delta < 2 * c.delta_min)
-  {
+  if (delta < 2 * c.delta_min) {
     double d1 = D1(delta / 2);
     double d2 = point_distance(c.start.x, c.start.y, q.x, q.y);
     double sigma = 4 * PI * pow(d1, 2) / pow(d2, 2);
     double length = sqrt(delta / sigma);
-    if (!c.left)
-    {
+    if (!c.left) {
       sigma = -sigma;
     }
     clothoid1.delta_s = d * length;
@@ -438,14 +415,12 @@ void cc_turn_controls(const HC_CC_Circle &c, const Configuration &q, bool order,
   double length_arc;
   int shift;
   // irregular
-  if (!c.regular && (delta > 2 * c.delta_min + PI))
-  {
+  if (!c.regular && (delta > 2 * c.delta_min + PI)) {
     shift = -d;
     length_arc = fabs((TWO_PI - delta + 2 * c.delta_min) * c.kappa_inv);
   }
   // regular
-  else
-  {
+  else {
     shift = d;
     length_arc = fabs((delta - 2 * c.delta_min) * c.kappa_inv);
   }

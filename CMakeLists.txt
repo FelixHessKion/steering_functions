@@ -13,6 +13,8 @@ endif()
 # find_package(Boost REQUIRED COMPONENTS system)
 find_package(Eigen3 REQUIRED)
 
+find_package(ompl 1.5.0 REQUIRED)
+include_directories(${OMPL_INCLUDE_DIRS})
 
 ###########
 ## Build ##
@@ -40,6 +42,7 @@ set(SRC_FILES
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME} ${SRC_FILES})
+target_link_libraries(${PROJECT_NAME} ${OMPL_LIBRARIES})
 
 add_executable(ompl_demo ${SRC_FILES} src/ompl_demo.cpp)
-target_link_libraries(ompl_demo -lompl)
+target_link_libraries(ompl_demo ${OMPL_LIBRARIES})

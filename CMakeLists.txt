@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(steering_functions)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+## Compile as C++17, supported in RACK
+add_compile_options(-std=c++17)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -43,6 +43,3 @@ set(SRC_FILES
 ## Declare a C++ library
 add_library(${PROJECT_NAME} ${SRC_FILES})
 target_link_libraries(${PROJECT_NAME} ${OMPL_LIBRARIES})
-
-add_executable(ompl_demo ${SRC_FILES} src/ompl_demo.cpp)
-target_link_libraries(ompl_demo ${OMPL_LIBRARIES})

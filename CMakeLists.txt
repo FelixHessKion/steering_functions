@@ -43,3 +43,8 @@ set(SRC_FILES
 ## Declare a C++ library
 add_library(${PROJECT_NAME} ${SRC_FILES})
 target_link_libraries(${PROJECT_NAME} ${OMPL_LIBRARIES})
+
+## install include directory && library
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(DIRECTORY include/steering_functions DESTINATION include)
+install(DIRECTORY include/ompl_state_spaces DESTINATION include)
